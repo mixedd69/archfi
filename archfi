@@ -312,10 +312,11 @@ diskpartautoefi(){
       echo "$txtautopartclear"
       parted $device mklabel gpt
       echo "${txtautopartcreate//%1/EFI boot}"
-      sgdisk $device -n=1:0:+1024M -t=1:ef00
+      sgdisk $device -n=1:0:+1024lsblk
+      M -t=1:ef00
       echo "${txtautopartcreate//%1/swap}"
       swapsize=$(cat /proc/meminfo | grep MemTotal | awk '{ print $2 }')
-      swapsize=$(($swapsize/1000))"M"
+      swapsize=$(($swapsize/1000)*2)"M"
       sgdisk $device -n=3:0:+$swapsize -t=3:8200
       echo "${txtautopartcreate//%1/root}"
       sgdisk $device -n=4:0:0
@@ -1584,8 +1585,8 @@ archrefindinstall(){
 }
 archrefindinstallchroot(){
   #--usedefault /dev/sdXY --alldrivers
-  echo "refind-install"
-  refind-install
+  echo "refind-install --usedefault $bootdev --alldrivers
+  refind-install --usedefault $bootdev --alldrivers
   isvbox=$(lspci | grep "VirtualBox G")
   if [ "$isvbox" ]; then
     echo "VirtualBox detected, creating startup.nsh..."
@@ -1650,7 +1651,7 @@ archdidownload(){
         archdiurl=archdi.sourceforge.net/archdi
       ;;
       "github.com")
-        archdiurl=matmoul.github.io/archdi >archdi
+        archdiurl=matmoul.io > archdi
       ;;
     esac
   fi
