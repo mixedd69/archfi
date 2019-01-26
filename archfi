@@ -1585,8 +1585,8 @@ archrefindinstall(){
 }
 archrefindinstallchroot(){
   #--usedefault /dev/sdXY --alldrivers
-  echo "refind-install --usedefault $bootdev --alldrivers"
-  refind-install --usedefault $bootdev --alldrivers
+  echo "refind-install --usedefault /dev/sda1 --alldrivers"
+  refind-install --usedefault /dev/sda1 --alldrivers
   isvbox=$(lspci | grep "VirtualBox G")
   if [ "$isvbox" ]; then
     echo "VirtualBox detected, creating startup.nsh..."
